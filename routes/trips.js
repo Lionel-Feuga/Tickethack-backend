@@ -13,8 +13,9 @@ router.get("/all", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  const { departure, arrival, date } = req.body;
-
+  let { departure, arrival, date } = req.body;
+  departure = departure.charAt(0).toUpperCase() + departure.slice(1).toLowerCase();
+  arrival = arrival.charAt(0).toUpperCase() + arrival.slice(1).toLowerCase();
   const startOfDay = new Date(date);
   startOfDay.setUTCHours(0, 0, 0, 0);
 
@@ -25,13 +26,11 @@ router.get("/", (req, res) => {
     departure,
     arrival,
     date: { $gte: startOfDay, $lt: endOfDay },
-  })
-    .then((trips) => {
-      
-      trips ? res.json({result: true, trips: trips})
-      : res.json({result: false, message: "No trips found"})
-      
-    })
+  }).then((trips) => {
+    trips
+      ? res.json({ result: true, trips: trips })
+      : res.json({ result: false, message: "No trips found" });
+  });
 });
 
 module.exports = router;
