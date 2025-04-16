@@ -19,13 +19,16 @@ router.post("/", (req, res) => {
     });
 });
 
-router.get("/:tripId", (req, res) => {
-  const tripId = req.params.tripId
-  Cart.findOne({ tripId })
+router.get("/", (req, res) => {
+  
+  Cart.find()
     .populate("tripId")
     .then((data) => {
-      res.json(data);
+      res.json({
+        result: true,
+        data
+      });
     });
 });
 
-module.exports = router
+module.exports = router;
